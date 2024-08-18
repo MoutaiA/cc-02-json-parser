@@ -83,6 +83,15 @@ function isValidPair(chars) {
 
 function isValidValue(chars) {
 	const value = chars.join('');
+
+	if (chars[0] === '{' && chars.at(-1) === '}') {
+		return isWellStructured(chars);
+	}
+
+	if (chars[0] === '[' && chars.at(-1) === ']') {
+		return isValidArray(chars);
+	}
+
 	if (['true', 'false', 'null'].includes(value)) {
 		return true;
 	}
@@ -117,6 +126,33 @@ function isValidValue(chars) {
 	if (chars[openingQuotes] !== '"' && chars[closingQuotes] !== '"') {
 		return false;
 	}
+	return true;
+}
+
+function isValidArray(chars) {
+	if (chars[0] !== '[' || chars.at(-1) !== ']') {
+		return false;
+	}
+	const pairs = [];
+	let pair = [];
+	const arr = chars.slice(1, chars.length - 1);
+	for (const c of arr) {
+		if (c === ',') {
+			pairs.push(structuredClone(pair));
+			pair = [];
+			continue;
+		}
+		pair.push(c);
+	}
+	pairs.push(pair);
+
+	for (const pair of pairs) {
+		const value = pair.join('');
+		if (value[0] === "'" || value.at(-1) === "'") {
+			return false;
+		}
+	}
+
 	return true;
 }
 

@@ -73,3 +73,29 @@ describe('STEP 3', () => {
 		expect(result).toBe(1);
 	});
 });
+
+describe('STEP 4', () => {
+	test('[1] Should return code 0 for a valid json', () => {
+		const result = parse(MOCKED_FILES.STEP_4.VALID.first);
+
+		expect(result).toBe(0);
+	});
+
+	test('[2] Should return code 0 for a valid json', () => {
+		const result = parse(MOCKED_FILES.STEP_4.VALID.second);
+
+		expect(result).toBe(0);
+	});
+
+	test('[1] Shoudl return code 1 for an invalid json', () => {
+		const result = parse(MOCKED_FILES.STEP_4.INVALID.first);
+
+		expect(result).toBe(1);
+	});
+
+	test('[2] Shoudl return code 1 for an invalid json', () => {
+		const result = parse(MOCKED_FILES.STEP_4.INVALID.second);
+
+		expect(result).toBe(1);
+	});
+});
