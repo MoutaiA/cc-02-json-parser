@@ -3,13 +3,20 @@ function parse(file) {
 		return 1;
 	}
 
-	const chars = file.split('');
+	const chars = file.split('').filter((s) => s !== ' ' && s !== '\n');
 
-	if (chars[0] === '{' && chars.at(-1) === '}') {
+	if (isWellStructured(chars)) {
 		return 0;
-	} else {
-		return 1;
 	}
+	return 1;
+}
+
+function isWellStructured(chars) {
+	if (chars[0] !== '{' && chars.at(-1) !== '}') {
+		return false;
+	}
+
+	return true;
 }
 
 module.exports = {
