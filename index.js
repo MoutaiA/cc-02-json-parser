@@ -63,6 +63,9 @@ function isValidPair(chars) {
 		while (r < chars.length && chars[r] !== ':') {
 			r++;
 		}
+		if (chars[r] !== ':') {
+			return false;
+		}
 		colon = r++;
 		break;
 	}
@@ -71,17 +74,35 @@ function isValidPair(chars) {
 		return false;
 	}
 
-	if (!isValidValue(chars, r)) {
+	if (!isValidValue(chars.slice(r))) {
 		return false;
 	}
 
 	return true;
 }
 
-function isValidValue(chars, r) {
+function isValidValue(chars) {
+	const value = chars.join('');
+	if (['true', 'false', 'null'].includes(value)) {
+		return true;
+	}
+
+	let r = 0;
+	if (chars[r] !== '"') {
+		for (const c of chars.slice(r)) {
+			if (c === '.' || c === ',') {
+				continue;
+			}
+			const val = parseInt(c);
+			if (isNaN(val)) {
+				return false;
+			}
+		}
+		return true;
+	}
+
 	let openingQuotes = 0;
 	let closingQuotes = 0;
-
 	while (r < chars.length) {
 		while (r < chars.length && chars[r] !== '"') {
 			r++;
